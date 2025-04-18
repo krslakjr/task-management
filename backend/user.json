@@ -1,9 +1,38 @@
 [
-    {
-      "id": 1,
-      "username": "nesy",
-      "email": "akrslak17@gmail.com",
-      "password": "test"
-    }
-  ]
-  
+  {
+    "id": 1,
+    "username": "nesy",
+    "email": "akrslak17@gmail.com",
+    "password": "test"
+  },
+  {
+    "email": "nmuslic4@gmail.com",
+    "username": "nidal",
+    "password": "1234"
+  },
+  {
+    "email": "mkdan@gmail.com",
+    "username": "jdaksd",
+    "password": "1234"
+  },
+  {
+    "email": "akrslak@gmail.com",
+    "username": "anesa",
+    "password": "aaaa"
+  },
+  {
+    "email": "aaak@gm.com",
+    "username": "aaa",
+    "password": "aaaa"
+  },
+  {
+    "email": "sadqa@gmal.com",
+    "username": "asda",
+    "password": "123"
+  },
+  {
+    "email": "nidal@gma.com",
+    "username": "sada",
+    "password": "1234"
+  }
+]

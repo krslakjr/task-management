@@ -1,27 +1,39 @@
 import React, { useState } from 'react';
-import './Login.css';
+import './Register.css';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
+  const redirection = useNavigate();
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
+    if (password !== confirmPassword) {
+      alert('Please enter two same passwords.');
+      return;
+    }
+
+    console.log('Sending register:', { username, email, password });
+
     try {
-      const res = await fetch('http://localhost:3000/login', {
+      const res = await fetch('http://localhost:4000/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, email, password }),
       });
 
       const data = await res.json();
-      console.log(data);
+      console.log('Response:', data);
 
       if (res.ok) {
-        alert('Uspešna prijava!');
+        alert('Uspešna registracija!');
+        redirection('/');
       } else {
         alert('Greška: ' + data.message);
       }
@@ -32,59 +44,74 @@ const Register = () => {
   };
 
   return (
-    <div className="container">
-      <div className="screen">
-        <div className="screen__content">
+    <div className="reg-container">
+      <div className="reg-card">
+        <div className="reg-card__content">
           <h2 style={{ color: 'black', textAlign: 'center', marginTop: '40px', fontWeight: '700' }}>
-            Welcome to TaskFlow
+            Create Your Account
           </h2>
-          <form className="login" onSubmit={handleLogin}>
-            <div className="login__field">
-              <i className="login__icon fas fa-user"></i>
+          <form className="reg-form" onSubmit={handleRegister}>
+            <div className="reg-form__field">
+              <i className="reg-form__icon fas fa-user"></i>
               <input
                 type="text"
-                className="login__input"
-                placeholder="User name / Email"
+                className="reg-form__input"
+                placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
-            <div className="login__field">
-              <i className="login__icon fas fa-lock"></i>
+            <div className="reg-form__field">
+              <i className="reg-form__icon fas fa-envelope"></i>
+              <input
+                type="email"
+                className="reg-form__input"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="reg-form__field">
+              <i className="reg-form__icon fas fa-lock"></i>
               <input
                 type="password"
-                className="login__input"
+                className="reg-form__input"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <div style={{ textAlign: 'left', marginTop: '8px' }}>
-                <a href="#" style={{ fontSize: '12px', color: 'black', textDecoration: 'underline' }}>
-                  Forgot password?
-                </a>
-              </div>
+            </div>
+            <div className="reg-form__field">
+              <i className="reg-form__icon fas fa-lock"></i>
+              <input
+                type="password"
+                className="reg-form__input"
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
             </div>
 
-            <button className="button login__submit" type="submit">
-              <span className="button__text">Log In Now</span>
-              <i className="button__icon fas fa-chevron-right"></i>
+            <button className="reg-form__submit" type="submit">
+              <span>Register</span>
+              <i className="reg-btn__icon fas fa-chevron-right"></i>
             </button>
 
             <div style={{ textAlign: 'center', marginTop: '16px' }}>
-              <span style={{ color: '#D1D1D4', fontSize: '12px' }}>
-                Don't have an account?{' '}
-                <a href="#" style={{ color: '#fff', textDecoration: 'underline' }}>
-                  Create one
+              <span style={{ color: '#D1D1D4', fontSize: '12px', marginLeft: '35px' }}>
+                Already have an account?{' '}
+                <a href="/" style={{ color: '#fff', textDecoration: 'underline' }}>
+                  Log In
                 </a>
               </span>
             </div>
           </form>
         </div>
-        <div className="screen__background">
-          <span className="screen__background__shape screen__background__shape4"></span>
-          <span className="screen__background__shape screen__background__shape3"></span>
-          <span className="screen__background__shape screen__background__shape2"></span>
-          <span className="screen__background__shape screen__background__shape1"></span>
+        <div className="reg-card__background">
+          <span className="reg-shape reg-shape4"></span>
+          <span className="reg-shape reg-shape3"></span>
+          <span className="reg-shape reg-shape2"></span>
+          <span className="reg-shape reg-shape1"></span>
         </div>
       </div>
     </div>

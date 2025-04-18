@@ -1,24 +1,46 @@
 import React, { useState } from 'react';
 import './Login.css';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-
-    // Ovdje jednostavno možemo dodati uslov da proverimo da li su uneseni podaci
-    if (username === 'admin' && password === 'password') {
-      alert('Uspešna prijava!');
-      setUsername('');
-      setPassword('');
-      // Ovde možeš da usmeriš korisnika na dashboard, ili neki drugi deo aplikacije
-      // npr. navigate('/dashboard'); (ako koristiš React Router)
-    } else {
-      alert('Pogrešno korisničko ime ili lozinka');
+  
+    console.log("🔐 Attempting login with:", { username, password });
+  
+    if (!username || !password) {
+      alert('Both fields are required.');
+      return;
+    }
+  
+    try {
+      const response = await fetch('http://localhost:4000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        alert('Uspješna prijava!');
+        setUsername('');
+        setPassword('');
+        navigate('/dashboard');
+      } else {
+        alert(data.message || 'Error for login.');
+      }
+    } catch (error) {
+      alert('Server Error');
+      console.error('Login error:', error);
     }
   };
+  
 
   return (
     <div className="container">
@@ -33,7 +55,7 @@ const Login = () => {
               <input
                 type="text"
                 className="login__input"
-                placeholder="User name / Email"
+                placeholder="User name"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
@@ -70,20 +92,21 @@ const Login = () => {
             </button>
 
             <div style={{ textAlign: 'center', marginTop: '16px' }}>
-              <span style={{ color: '#D1D1D4', fontSize: '12px' }}>
+              <span style={{ color: '#D1D1D4', fontSize: '12px', marginLeft: '45px' }}>
                 Don't have an account?{' '}
                 <button
-                  type="button"
-                  style={{
-                    color: '#fff',
-                    background: 'none',
-                    border: 'none',
-                    textDecoration: 'underline',
-                    cursor: 'pointer',
-                  }}
-                >
-                  Create one
-                </button>
+      type="button"
+      onClick={() => navigate('/register')}
+      style={{
+        color: '#fff',
+        background: 'none',
+        border: 'none',
+        textDecoration: 'underline',
+        cursor: 'pointer',
+      }}
+    >
+      Create one
+    </button>
               </span>
             </div>
           </form>
